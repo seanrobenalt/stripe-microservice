@@ -9,6 +9,9 @@ Rails.application.routes.draw do
 
     match '/customers', to: 'customers#preflight', via: [:options]
     resources :customers, only: [:create]
+
+    match '/coupons', to: 'coupons#preflight', via: [:options]
+    resources :coupons, only: [:create]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

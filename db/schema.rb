@@ -10,7 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180203195608) do
+ActiveRecord::Schema.define(version: 20180203211539) do
+
+  create_table "coupons", force: :cascade do |t|
+    t.integer "percent_off"
+    t.string "duration"
+    t.integer "duration_in_months"
+    t.string "currency"
+    t.integer "amount_off"
+    t.integer "max_redemptions"
+    t.datetime "redeem_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "customers", force: :cascade do |t|
     t.string "description"
