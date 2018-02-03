@@ -1,15 +1,5 @@
 Rails.application.routes.draw do
-  get 'apps/index'
-
-  get 'apps/new'
-
-  get 'apps/show'
-
-  get 'apps/edit'
-
-  get 'apps/update'
-
-  get 'apps/destroy'
+  resources :apps, :except => [:edit, :update]
 
   root 'welcome#index'
 
