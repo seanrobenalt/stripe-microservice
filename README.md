@@ -51,6 +51,10 @@ Run this series of commands to ensure Heroku production environment gets set up 
 
 `git push heroku master`
 
+`heroku restart`
+
+`heroku run rake db:migrate`
+
 Wait for your app to be deployed and take down the url that Heroku created for you where your app is hosted. You will need this url to POST to from your app.
 
 #### Using the service
