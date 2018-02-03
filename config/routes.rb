@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     match '/payments', to: 'payments#preflight', via: [:options]
     resources :payments, only: [:create]
+
+    match '/customers', to: 'customers#preflight', via: [:options]
+    resources :customers, only: [:create]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
