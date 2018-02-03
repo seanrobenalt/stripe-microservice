@@ -12,10 +12,6 @@ class API::CouponsController < ApplicationController
     end
   end
 
-  def preflight
-    head 200
-  end
-
   private
 
   def coupon_params

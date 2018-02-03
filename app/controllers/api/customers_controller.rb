@@ -12,10 +12,6 @@ class API::CustomersController < ApplicationController
     end
   end
 
-  def preflight
-    head 200
-  end
-
   private
 
   def customer_params

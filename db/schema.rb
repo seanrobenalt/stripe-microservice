@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180203214410) do
+ActiveRecord::Schema.define(version: 20180203222234) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.string "country"
+    t.string "email"
+    t.string "account_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "coupons", force: :cascade do |t|
     t.integer "percent_off"

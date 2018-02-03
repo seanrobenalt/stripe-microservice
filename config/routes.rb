@@ -4,17 +4,20 @@ Rails.application.routes.draw do
   devise_for :users
 
   namespace :api, defaults: { format: :json } do
-    match '/payments', to: 'payments#preflight', via: [:options]
+    match '/payments', to: 'application#preflight', via: [:options]
     resources :payments, only: [:create]
 
-    match '/customers', to: 'customers#preflight', via: [:options]
+    match '/customers', to: 'application#preflight', via: [:options]
     resources :customers, only: [:create]
 
-    match '/coupons', to: 'coupons#preflight', via: [:options]
+    match '/coupons', to: 'application#preflight', via: [:options]
     resources :coupons, only: [:create]
 
-    match '/plans', to: 'plans#preflight', via: [:options]
+    match '/plans', to: 'application#preflight', via: [:options]
     resources :plans, only: [:create]
+
+    match '/accounts', to: 'application#preflight', via: [:options]
+    resources :accounts, only: [:create]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

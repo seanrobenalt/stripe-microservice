@@ -203,3 +203,21 @@ stripeService.createPlan = function(data, planEndpoint) {
 
 };
 ```
+
+##### Creating accounts
+
+```javascript
+const accountEndpoint = 'https://your-heroku-path.herokuapp.com/api/accounts';
+
+stripeService.createAccount = function(data, accountEndpoint) {
+  // available params on coupon object
+  var account = {account: {
+    country: data.country,
+    email: data.email,
+    type: data.account_type
+  }};
+
+  ajaxify(accountEndpoint, account);
+
+};
+```

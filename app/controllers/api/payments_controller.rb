@@ -12,10 +12,6 @@ class API::PaymentsController < ApplicationController
     end
   end
 
-  def preflight
-    head 200
-  end
-
   private
 
   def payment_params

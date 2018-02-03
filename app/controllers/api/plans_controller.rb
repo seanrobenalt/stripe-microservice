@@ -12,10 +12,6 @@ class API::PlansController < ApplicationController
     end
   end
 
-  def preflight
-    head 200
-  end
-
   private
 
   def plan_params
