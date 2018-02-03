@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
     match '/coupons', to: 'coupons#preflight', via: [:options]
     resources :coupons, only: [:create]
+
+    match '/plans', to: 'plans#preflight', via: [:options]
+    resources :plans, only: [:create]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

@@ -164,7 +164,7 @@ You can also create coupons separate from customer payments:
 ```javascript
 const couponEndpoint = 'https://your-heroku-path.herokuapp.com/api/coupons';
 
-stripeService.hitStripe = function(data, couponEndpoint) {
+stripeService.createCoupon = function(data, couponEndpoint) {
   // available params on coupon object
   var coupon = {coupon: {
     duration: data.duration,
@@ -182,3 +182,24 @@ stripeService.hitStripe = function(data, couponEndpoint) {
 ```
 
 This creates a coupon for you to use as you wish. Stripe will generate a custom coupon code for your customers to use.
+
+##### Creating plans
+
+```javascript
+const planEndpoint = 'https://your-heroku-path.herokuapp.com/api/plans';
+
+stripeService.createPlan = function(data, planEndpoint) {
+  // available params on coupon object
+  var plan = {plan: {
+    currency: data.currency,
+    interval: data.interval,
+    name: data.name,
+    amount: data.amount,
+    interval_count: data.interval_count,
+    statement_descriptor: data.statement_descriptor
+  }};
+
+  ajaxify(planEndpoint, plan);
+
+};
+```
