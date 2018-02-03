@@ -210,7 +210,7 @@ stripeService.createPlan = function(data, planEndpoint) {
 const accountEndpoint = 'https://your-heroku-path.herokuapp.com/api/accounts';
 
 stripeService.createAccount = function(data, accountEndpoint) {
-  // available params on coupon object
+  // type is required, email is reuired if type is 'standard'
   var account = {account: {
     country: data.country,
     email: data.email,
@@ -221,3 +221,27 @@ stripeService.createAccount = function(data, accountEndpoint) {
 
 };
 ```
+
+##### Creating and verifying bank accounts
+
+```javascript
+const bankAccountEndpoint = 'https://your-heroku-path.herokuapp.com/api/bank_accounts';
+
+stripeService.createAccount = function(data, bankAccountEndpoint) {
+  // customer_id, account_number, routing_number, country and currency required
+  var bank_account = {bank_account: {
+    country: data.country,
+    currency: data.currency,
+    account_holder_name: data.account_holder_name,
+    account_holder_type: data.account_holder_type,
+    routing_number: data.routing_number,
+    account_number: data.account_number,
+    customer_id: data.cus_id
+  }};
+
+  ajaxify(bankAccountEndpoint, account);
+
+};
+```
+
+This takes care of creating a bank account for an existing Stripe customer as well as verifying that bank account.

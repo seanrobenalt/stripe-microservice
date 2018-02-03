@@ -41,7 +41,7 @@ class API::PaymentsController < ApplicationController
       puts mail
     end
 
-    rescue Stripe::CardError => e
-      puts e.message
+  rescue Stripe::CardError => e
+    puts e.message
   end
 end

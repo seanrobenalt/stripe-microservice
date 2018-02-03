@@ -34,6 +34,6 @@ class API::CustomersController < ApplicationController
     )
 
   rescue Exception => msg
-      puts msg
+    puts msg
   end
 end

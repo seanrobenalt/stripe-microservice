@@ -18,6 +18,9 @@ Rails.application.routes.draw do
 
     match '/accounts', to: 'application#preflight', via: [:options]
     resources :accounts, only: [:create]
+
+    match '/bank_accounts', to: 'application#preflight', via: [:options]
+    resources :bank_accounts, only: [:create]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
