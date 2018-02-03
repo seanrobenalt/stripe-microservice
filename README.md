@@ -25,7 +25,7 @@ STRIPE_PUBLISHABLE_KEY: `pk_test00000000000`
 STRIPE_SECRET_KEY: `pk_secret0000000000`
 ```
 
-This repo comes with the `stripe.rb` initializer file so you're all set up
+This repo comes with the [`stripe.rb`](./config/initializers/stripe.rb) initializer file so you're all set up.
 
 #### Deploying to Heroku
 
@@ -59,18 +59,33 @@ Wait for your app to be deployed and take down the url that Heroku created for y
 
 #### Using the service
 
-One simple function in your app will take care of creating a payment to your Stripe account.
+A few simple functions in your app will take care of interacting with your Stripe account.
 
 First, set up a namespace to avoid this code colliding with other JavaScript in your app:
 
 ```javascript
-var payments = {};
+var stripeService = {};
 ```
 
-Then define a function as a property on that object that will POST to this microservice which exists at your deployed Heroku instance:
+Next, set up a global function for sending the AJAX request:
 
 ```javascript
-payments.hitStripe = function(data) {
+const ajaxify = function(endpoint, payload) {
+  var request = new XMLHttpRequest();
+  request.open("POST", endpoint, true);
+  request.setRequestHeader('Content-Type', 'application/json');
+  request.send(JSON.stringify(payload));
+}
+```
+
+Then define functions on the `stripeService` object that POST to different routes and send different objects depending on what you want to send to Stripe.
+
+##### Making a payment
+
+```javascript
+const paymentEndpoint = 'https://your-heroku-path.herokuapp.com/api/payments';
+
+stripeService.hitStripe = function(data, paymentEndpoint) {
   // cus_id, amount and currency are required, description is optional
   var payment = {payment: {
     cus_id: data.cus_id,
@@ -79,12 +94,28 @@ payments.hitStripe = function(data) {
     description: data.description
   }};
 
-  // perform the async AJAX request
-  var request = new XMLHttpRequest();
-  request.open("POST", "https://your-heroku-path-02918.herokuapp.com", true);
-  request.setRequestHeader('Content-Type', 'application/json');
-  request.send(JSON.stringify(payment));
+  ajaxify(paymentEndpoint, payment);
+
 };
 ```
 
-Now you can call `payments.hitStripe(data)` on your payment forms where your customer is already an existing Stripe customer and if you pass in the `customer_id` of that Stripe customer along with `amount` and `currency`, this service will charge the customer's credit card for you.
+##### Creating a customer
+
+```javascript
+const customerEndpoint = 'https://your-heroku-path.herokuapp.com/api/customers';
+
+stripeService.createStripeCustomer = function(data, customerEndpoint) {
+  // description not required
+  var customer = description: {customer: {
+    description: data.description,
+    email: data.email,
+    exp_month: data.exp_month,
+    exp_year: data.exp_year,
+    cvc: data.cvc,
+    number: data.card_number
+  }};
+
+  ajaxify(customerEndpoint, customer);
+
+};
+```
