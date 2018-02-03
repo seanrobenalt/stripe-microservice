@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  resources :apps, :except => [:edit, :update]
-
   root 'welcome#index'
 
   devise_for :users
