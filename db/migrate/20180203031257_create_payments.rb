@@ -5,7 +5,6 @@ class CreatePayments < ActiveRecord::Migration[5.1]
       t.integer :amount
       t.string :description
       t.string :currency
-      t.references :app, foreign_key: true
 
       t.timestamps
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180203004844) do
+ActiveRecord::Schema.define(version: 20180203031257) do
 
   create_table "apps", force: :cascade do |t|
     t.string "name"
@@ -26,10 +26,8 @@ ActiveRecord::Schema.define(version: 20180203004844) do
     t.integer "amount"
     t.string "description"
     t.string "currency"
-    t.integer "app_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["app_id"], name: "index_payments_on_app_id"
   end
 
   create_table "users", force: :cascade do |t|

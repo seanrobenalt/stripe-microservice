@@ -9,13 +9,9 @@ class API::PaymentsController < ApplicationController
   end
 
   def create
-    app = App.find_by(url: request.env['HTTP_ORIGIN'])
-    if app == nil
-      render json: 'app not found', status: :unprocessable_entity
-    end
     payment = Payment.new(payment_params)
-    payment.app = app
     if payment.save!
+      hitStripe(payment)
       render json: payment, status: :created
     else
       render json: {errors: payment.errors}, status: :unprocessable_entity
@@ -32,4 +28,17 @@ class API::PaymentsController < ApplicationController
     params.require(:payment).permit(:cus_id, :amount, :description, :currency)
   end
 
+  def hitStripe(payment)
+    customer = Stripe::Customer.retrieve(payment.cus_id)
+    Stripe::Charge.create(
+      :customer => customer.id,
+      :source => customer.default_source,
+      :amount => payment.amount,
+      :currency => payment.currency,
+      :description => payment.description
+    )
+
+    rescue Stripe::CardError => e
+      puts e.message
+  end
 end
