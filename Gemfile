@@ -30,6 +30,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'figaro'
 gem 'devise'
 gem 'faker'
+gem 'stripe'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
