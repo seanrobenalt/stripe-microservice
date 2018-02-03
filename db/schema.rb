@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180203153433) do
+ActiveRecord::Schema.define(version: 20180203195608) do
 
   create_table "customers", force: :cascade do |t|
     t.string "description"
@@ -30,6 +30,11 @@ ActiveRecord::Schema.define(version: 20180203153433) do
     t.string "currency"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "coupon", default: false
+    t.integer "percent_off"
+    t.string "duration"
+    t.integer "duration_in_months"
+    t.string "coupon_id"
   end
 
   create_table "users", force: :cascade do |t|

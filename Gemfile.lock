@@ -86,6 +86,10 @@ GEM
     jbuilder (2.7.0)
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    letter_opener (1.5.0)
+      launchy (~> 2.2)
     libv8 (3.16.14.19-x86_64-darwin-16)
     listen (3.1.5)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -241,6 +245,7 @@ DEPENDENCIES
   faker
   figaro
   jbuilder (~> 2.5)
+  letter_opener
   listen (>= 3.0.5, < 3.2)
   pg
   puma (~> 3.7)
