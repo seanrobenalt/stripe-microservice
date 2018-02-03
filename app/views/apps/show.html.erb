@@ -1,3 +1,9 @@
 <h1>Apps#show</h1>
 <h3><%= @app.name %></h3>
 <p><%= @app.url %></p>
+<% @payments.each do |payment| %>
+<ul>
+  <li><%= payment.amount %></li>
+  <li><%= payment.description %></li>
+</ul>
+<% end %>

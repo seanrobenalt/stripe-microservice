@@ -22,6 +22,7 @@ class AppsController < ApplicationController
 
   def show
     @app = App.find(params[:id])
+    @payments = Payment.where(app_id: @app)
   end
 
   def destroy
