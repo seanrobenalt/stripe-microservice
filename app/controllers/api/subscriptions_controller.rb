@@ -1,7 +1,4 @@
 class API::SubscriptionsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_access_control_headers
-
   def create
     subscription = Subscription.new(subscription_params)
     if subscription.save!

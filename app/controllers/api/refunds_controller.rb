@@ -1,7 +1,4 @@
 class API::RefundsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_access_control_headers
-
   def create
     refund = Refund.new(refund_params)
     if refund.save!

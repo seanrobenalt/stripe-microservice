@@ -1,7 +1,4 @@
 class API::PaymentsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_access_control_headers
-
   def create
     payment = Payment.new(payment_params)
     if payment.save!

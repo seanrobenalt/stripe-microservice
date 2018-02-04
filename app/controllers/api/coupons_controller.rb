@@ -1,7 +1,4 @@
 class API::CouponsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_access_control_headers
-
   def create
     coupon = Coupon.new(coupon_params)
     if coupon.save!

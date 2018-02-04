@@ -1,7 +1,4 @@
 class API::BankAccountsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_access_control_headers
-
   def create
     bank_account = BankAccount.new(bank_account_params)
     if bank_account.save!

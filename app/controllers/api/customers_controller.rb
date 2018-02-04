@@ -1,7 +1,4 @@
 class API::CustomersController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_access_control_headers
-
   def create
     customer = Customer.new(customer_params)
     if customer.save!

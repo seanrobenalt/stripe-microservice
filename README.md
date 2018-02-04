@@ -59,7 +59,7 @@ Wait for your app to be deployed and take down the url that Heroku created for y
 
 #### Testing the service
 
-To test on local server use curl:
+To test on local server use curl with the rails server running in separate tab:
 
 ```
 curl -v -H "Accept: application/json" -H "Origin: http://anywhere.com" -H "Content-Type: application/json" -X POST -d '{"charge_id": "ch_1BrYauDO9zv0VK3hsnE9oVyo", "amount": "18", "reason": "duplicate"}' http://localhost:3000/api/refunds
@@ -263,13 +263,34 @@ This takes care of creating and verifying a bank account for an existing Stripe 
 const subscriptionEndpoint = 'https://your-heroku-path.herokuapp.com/api/subscriptions';
 
 stripeService.createAccount = function(data, subscriptionEndpoint) {
-  // customer_id, account_number, routing_number, country and currency required
+  // a customer_id and plan_id are required
   var subscription = {subscription: {
     cus_id: data.cus_id,
     plan_id: data.plan_id
   }};
 
   ajaxify(subscriptionEndpoint, subscription);
+
+};
+```
+
+##### Making payouts
+
+Make sure to go into the Settings tab underneath Balance on the left nav and check the box next to manual for manual payouts.
+
+```javascript
+const payoutEndpoint = 'https://your-heroku-path.herokuapp.com/api/payouts';
+
+stripeService.createAccount = function(data, payoutEndpoint) {
+  // amount and type of currency are required, default payout destination is your bank account
+  var payout = {payout: {
+    amount: data.amount,
+    currency: data.currency,
+    destination: data.destination,
+    description: data.description
+  }};
+
+  ajaxify(payoutEndpoint, payout);
 
 };
 ```

@@ -1,7 +1,4 @@
 class API::AccountsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-  before_action :set_access_control_headers
-
   def create
     account = Account.new(account_params)
     if account.save!
