@@ -2,7 +2,7 @@ class API::PaymentsController < ApplicationController
   def create
     payment = Payment.new(payment_params)
     if payment.save!
-      hitStripe(payment)
+      makePayment(payment)
       render json: payment, status: :created
     else
       render json: {errors: payment.errors}, status: :unprocessable_entity
@@ -16,7 +16,7 @@ class API::PaymentsController < ApplicationController
       :percent_off, :duration, :duration_in_months, :coupon_id)
   end
 
-  def hitStripe(payment)
+  def makePayment(payment)
     customer = Stripe::Customer.retrieve(payment.cus_id)
     Stripe::Charge.create(
       customer: customer.id,

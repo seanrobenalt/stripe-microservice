@@ -148,7 +148,7 @@ stripeService.createStripeCustomer = function(data, customerEndpoint) {
 ```javascript
 const paymentEndpoint = 'https://your-heroku-path.herokuapp.com/api/payments';
 
-stripeService.hitStripe = function(data, paymentEndpoint) {
+stripeService.makePayment = function(data, paymentEndpoint) {
   // cus_id, amount and currency are required, description is optional
   var payment = {payment: {
     cus_id: data.cus_id,
@@ -169,7 +169,7 @@ If you want to create coupons for customers along with their payments, do so by 
 ```javascript
 const paymentEndpoint = 'https://your-heroku-path.herokuapp.com/api/payments';
 
-stripeService.hitStripe = function(data, paymentEndpoint) {
+stripeService.makePayment = function(data, paymentEndpoint) {
   // coupon must be set to true in order for a coupon to be created
   // a coupon duration can be 'once', 'forever' or 'repeating'
   // coupon percent_off must be integer and coupon_id is string of your choice ie. '50OFF'
@@ -189,8 +189,10 @@ stripeService.hitStripe = function(data, paymentEndpoint) {
 };
 ```
 
+This method will create a coupon in Stripe with the provided params. It will also send out an email to the Stripe customer with the coupon code, percent off they get with the coupon and how many times they can use the coupon.
+
 ##### *-----MAILGUN SECTION STARTS HERE-----*
-This method will create a coupon in Stripe with the provided params. It will also send out an email to the Stripe customer with the coupon code, percent off they get with the coupon and how many times they can use the coupon. This does require you to set up a [Mailgun](https://www.mailgun.com/) account, but this is extremely easy to do with the Heroku CLI:
+This does require you to set up a [Mailgun](https://www.mailgun.com/) account, but this is extremely easy to do with the Heroku CLI:
 
 `heroku addons:create mailgun`
 
@@ -357,7 +359,7 @@ Once you've defined these functions on your `stripeService` object, you can simp
 For example, you have an application where you want to store a credit card for user's upon signup. All you have to do is include the necessary credit card fields in your form and on submit call this function passing in the data:
 
 ```javascript
-createStripeCustomer(data, customerEndpoint);
+stripeService.createStripeCustomer(data, customerEndpoint);
 ```
 
 It's recommended to have a `cus_id` column in your database so you can also store the unique ID of the user in Stripe in order to be able to retrieve that user later on.
@@ -367,7 +369,7 @@ It's also recommended to store your endpoints in variables, that way you can eas
 Now let's say you want to make a charge to this customer and send them a coupon they can use for further purchases. All you have to do here is send the amount, currency and unique Stripe `cus_id`, as well as a `coupon` column set to true with a `percent_off` and `duration` declared. You can then call this function on your payment submit button:
 
 ```javascript
-hitStripe(data, paymentEndpoint)
+stripeService.makePayment(data, paymentEndpoint)
 ```
 
 That will make the charge of the specified amount on the default payment source of the specified customer, and send them an email with their coupon.
@@ -375,13 +377,13 @@ That will make the charge of the specified amount on the default payment source 
 If you have an application in which you will want to pay users for whatever reason, you can create a connected account for them in Stripe in which you will be able to transfer money to their balance. It's recommended to create a standard account, as Stripe will take care of signing the user up. All you need to do is pass in an email, and specify standard `account_type`. Then you can call this function:
 
 ```javascript
-createAccount(data, accountEndpoint);
+stripeService.createAccount(data, accountEndpoint);
 ```
 
 It's recommended to save this call in a variable, as you will need the unique `account_id` from Stripe in order to transfer money to the account balance. Then in order to make a transfer, just pass in the `account_id`, currency type and amount:
 
 ```javascript
-createTransfer(data, transferEndpoint);
+stripeService.createTransfer(data, transferEndpoint);
 ```
 
 This will make a transfer to the destination account and send an email to the recipient letting them know they have received some cash.
