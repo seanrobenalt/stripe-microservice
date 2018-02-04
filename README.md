@@ -143,6 +143,8 @@ stripeService.createStripeCustomer = function(data, customerEndpoint) {
 };
 ```
 
+This will create a customer and we take care of storing their unique Stripe customer_id upon creation allowing you to access this accounts sources later on for charges, payments, subscriptions, etc.
+
 ##### Making a payment
 
 ```javascript
@@ -362,9 +364,9 @@ For example, you have an application where you want to store a credit card for u
 stripeService.createStripeCustomer(data, customerEndpoint);
 ```
 
-It's recommended to have a `cus_id` column in your database so you can also store the unique ID of the user in Stripe in order to be able to retrieve that user later on.
+This creates a customer, retrieves their unique Stripe customer_id and stores it in our database for later reference.
 
-It's also recommended to store your endpoints in variables, that way you can easily pass them in to your API calls depending on what you want to do.
+It's recommended to store your endpoints in variables, that way you can easily pass them in to your API calls depending on what you want to do.
 
 Now let's say you want to make a charge to this customer and send them a coupon they can use for further purchases. All you have to do here is send the amount, currency and unique Stripe `cus_id`, as well as a `coupon` column set to true with a `percent_off` and `duration` declared. You can then call this function on your payment submit button:
 

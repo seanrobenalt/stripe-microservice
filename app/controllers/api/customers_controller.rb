@@ -12,7 +12,7 @@ class API::CustomersController < ApplicationController
   private
 
   def customer_params
-    params.require(:customer).permit(:description, :email, :exp_month, :exp_year, :card_number, :cvc)
+    params.require(:customer).permit(:description, :email, :exp_month, :exp_year, :card_number, :cvc, :cus_id)
   end
 
   def createStripeCustomer(customer)
@@ -30,7 +30,20 @@ class API::CustomersController < ApplicationController
       source: token
     )
 
+    new_cus_id = get_cus_id(customer)
+    customer.update_attribute(:cus_id, new_cus_id)
+
+    mail = CustomerMailer.new_customer(customer).deliver_later
+
+    # delete this line unless you want to view outgoing mail in logs
+    puts mail
+
   rescue Exception => msg
     puts msg
+  end
+
+  def get_cus_id(customer)
+    current_custo = Stripe::Customer.list(email: customer.email)
+    current_custo["data"][0].id
   end
 end
