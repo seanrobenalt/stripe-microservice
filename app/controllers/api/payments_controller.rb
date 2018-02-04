@@ -32,7 +32,7 @@ class API::PaymentsController < ApplicationController
         duration: payment.duration,
         id: payment.coupon_id
       )
-      mail = CouponMailer.send_coupon(customer, payment)
+      mail = CouponMailer.send_coupon(customer, payment).deliver_later
 
       # delete this line unless you want to see your outgoing mail in logs
       puts mail

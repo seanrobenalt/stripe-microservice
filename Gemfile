@@ -15,6 +15,7 @@ gem 'puma', '~> 3.7'
 gem 'rails', '~> 5.1.4'
 gem 'redis', '~> 3.0'
 gem 'sass-rails', '~> 5.0'
+gem 'sidekiq'
 gem 'stripe'
 gem 'therubyracer', platforms: :ruby
 gem 'turbolinks', '~> 5'

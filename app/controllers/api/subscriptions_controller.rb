@@ -26,7 +26,7 @@ class API::SubscriptionsController < ApplicationController
     )
 
     customer = Stripe::Customer.retrieve(subscription.cus_id)
-    mail = SubscriptionMailer.send_subscription_email(customer)
+    mail = SubscriptionMailer.send_subscription_email(customer).deliver_later
 
     # delete this line unless you want to see your emails in your logs
     puts mail

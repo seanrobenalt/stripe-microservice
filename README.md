@@ -57,6 +57,38 @@ Run this series of commands to ensure Heroku production environment gets set up 
 
 Wait for your app to be deployed and take down the url that Heroku created for you where your app is hosted. You will need this url to POST to from your app.
 
+#### The helpers
+
+When your app is deployed to Heroku and you've been making requests to it in production for quite some time, the methods in [`application_helper.rb`](./app/helpers/application_helper.rb) might come in handy. You can also create yourself as a user on your Heroku instance, and after doing so the [`StatsJob`](./app/jobs/stats_job.rb) will kick off, which sends you a weekly update of all your stats to an email of your choice.
+
+You can bypass the email update if you'd like and just check stats from your terminal:
+
+`heroku run bundle exec rails console`
+
+And then:
+
+`helper.get_your_balance` *<-- will return your balance object as JSON*
+
+Then you can run all the helper methods and get your stats.
+
+#### Sidekiq job
+
+The service comes configured with a job that will send you a weekly email of all your stats that can be retrieved from the [`application_helper.rb`](./app/helpers/application_helper.rb) file. You need to set the email you want this to deliver to in `application.yml` as `ADMIN_EMAIL`. You will also need to configure a Redis server on your Heroku instance, and this is extremely easy as well:
+
+`heroku addons:create rediscloud`
+
+This initializes a Redis cloud for you and will return the URL the cloud is running at. Copy this URL and run:
+
+`heroku config:set REDIS_PROVIDER=the_url_you_copied`
+
+Sign yourself up as a user at your Heroku instance and then you are all set to receive a weekly update email of your stats.
+
+To test this part of the service locally, make sure Redis is installaed on your machine:
+
+`brew install redis`
+
+Run `redis-server` in one tab, `bundle exec sidekiq` in another and your rails server in a third tab. Sign up a user and see the [`StatsJob`](./app/jobs/stats_job.rb) queued up.
+
 #### Testing the service
 
 To test on local server use curl with the rails server running in separate tab:
@@ -97,7 +129,7 @@ const customerEndpoint = 'https://your-heroku-path.herokuapp.com/api/customers';
 
 stripeService.createStripeCustomer = function(data, customerEndpoint) {
   // description not required
-  var customer = description: {customer: {
+  var customer = {customer: {
     description: data.description,
     email: data.email,
     exp_month: data.exp_month,
@@ -294,17 +326,3 @@ stripeService.createAccount = function(data, payoutEndpoint) {
 
 };
 ```
-
-#### The helpers
-
-When your app is deployed to Heroku and you've been making requests to it in production for quite some time, the methods in [`application_helper.rb`](./app/helpers/application_helper.rb) might come in handy.
-
-From your terminal, you can get these stats with:
-
-`heroku run bundle exec rails console`
-
-And then:
-
-`helper.get_your_balance` *<-- will return your balance object as JSON*
-
-All the methods in that file are self explanatory.
