@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+    - 2.4.0
+before_script:
+  - bundle
+  - bundle exec rake db:create db:migrate --trace
+script:
+  - bundle exec rspec
