@@ -364,7 +364,7 @@ For example, you have an application where you want to store a credit card for u
 stripeService.createStripeCustomer(data, customerEndpoint);
 ```
 
-This creates a customer, retrieves their unique Stripe customer_id and stores it in our database for later reference.
+This creates a customer, retrieves their unique Stripe `customer_id` and stores it in our database for later reference.
 
 It's recommended to store your endpoints in variables, that way you can easily pass them in to your API calls depending on what you want to do.
 
@@ -382,7 +382,7 @@ If you have an application in which you will want to pay users for whatever reas
 stripeService.createAccount(data, accountEndpoint);
 ```
 
-It's recommended to save this call in a variable, as you will need the unique `account_id` from Stripe in order to transfer money to the account balance. Then in order to make a transfer, just pass in the `account_id`, currency type and amount:
+This takes care of creating the new Stripe account as well as retrieving and storying the unique Stripe `account_id` in our database for later reference. It also sends an email to the new account holder letting them know they're account is available to them. Then in order to make a transfer, just pass in the `account_id`, `currency` and `amount`:
 
 ```javascript
 stripeService.createTransfer(data, transferEndpoint);
