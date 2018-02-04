@@ -1,6 +1,6 @@
 ### Stripe microservice
 
-Use this microservice to easily integrate Stripe in your apps to make payments without having to use Stripe Checkout or Elements. No token needed, simply pass a Stripe customer id and a few other params and this microservice takes care of charging the customer's credit card through Stripe.
+Use this microservice to easily integrate Stripe into your apps without having to use Stripe Checkout or Elements. No token needed, simply pass in a few parameters for each request and this service will take care of interacting with Stripe for you.
 
 First, visit [Stripe](https://stripe.com/), sign up for an account and get API keys.
 
@@ -56,6 +56,16 @@ Run this series of commands to ensure Heroku production environment gets set up 
 `heroku run rake db:migrate`
 
 Wait for your app to be deployed and take down the url that Heroku created for you where your app is hosted. You will need this url to POST to from your app.
+
+#### Testing the service
+
+To test on local server use curl:
+
+```
+curl -v -H "Accept: application/json" -H "Origin: http://anywhere.com" -H "Content-Type: application/json" -X POST -d '{"charge_id": "ch_1BrYauDO9zv0VK3hsnE9oVyo", "amount": "18", "reason": "duplicate"}' http://localhost:3000/api/refunds
+```
+
+You can test all endpoints, just make sure to send the correct parameters.
 
 #### Using the service
 
@@ -189,7 +199,8 @@ This creates a coupon for you to use as you wish. Stripe will generate a custom 
 const planEndpoint = 'https://your-heroku-path.herokuapp.com/api/plans';
 
 stripeService.createPlan = function(data, planEndpoint) {
-  // available params on coupon object
+  // available params on plan object
+  // all but statement_descriptor are required
   var plan = {plan: {
     currency: data.currency,
     interval: data.interval,
@@ -210,7 +221,7 @@ stripeService.createPlan = function(data, planEndpoint) {
 const accountEndpoint = 'https://your-heroku-path.herokuapp.com/api/accounts';
 
 stripeService.createAccount = function(data, accountEndpoint) {
-  // type is required, email is reuired if type is 'standard'
+  // type is required, email is required if type is 'standard'
   var account = {account: {
     country: data.country,
     email: data.email,
@@ -244,4 +255,21 @@ stripeService.createAccount = function(data, bankAccountEndpoint) {
 };
 ```
 
-This takes care of creating a bank account for an existing Stripe customer as well as verifying that bank account.
+This takes care of creating and verifying a bank account for an existing Stripe customer.
+
+##### Creating subscriptions
+
+```javascript
+const subscriptionEndpoint = 'https://your-heroku-path.herokuapp.com/api/subscriptions';
+
+stripeService.createAccount = function(data, subscriptionEndpoint) {
+  // customer_id, account_number, routing_number, country and currency required
+  var subscription = {subscription: {
+    cus_id: data.cus_id,
+    plan_id: data.plan_id
+  }};
+
+  ajaxify(subscriptionEndpoint, subscription);
+
+};
+```

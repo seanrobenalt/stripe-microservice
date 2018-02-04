@@ -24,6 +24,9 @@ Rails.application.routes.draw do
 
     match '/subscriptions', to: 'application#preflight', via: [:options]
     resources :subscriptions, only: [:create]
+
+    match '/refunds', to: 'application#preflight', via: [:options]
+    resources :refunds, only: [:create]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
