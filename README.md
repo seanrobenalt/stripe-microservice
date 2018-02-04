@@ -59,7 +59,7 @@ Wait for your app to be deployed and take down the url that Heroku created for y
 
 #### The helpers
 
-When your app is deployed to Heroku and you've been making requests to it in production for quite some time, the methods in [`application_helper.rb`](./app/helpers/application_helper.rb) might come in handy. You can also create yourself as a user on your Heroku instance, and after doing so the [`StatsJob`](./app/jobs/stats_job.rb) will kick off, which sends you a weekly update of all your stats to an email of your choice.
+When your app is deployed to Heroku and you've been making requests to it in production for quite some time, the methods in [`application_helper.rb`](./app/helpers/application_helper.rb) might come in handy. You can also create yourself as a user on your Heroku instance, and after doing so the [`StatsJob`](./app/jobs/stats_job.rb) will kick off, which sends you a weekly update of all your stats to an email of your choice (*SEE MAILGUN SECTION BELOW TO SET UP EMAILS*)
 
 You can bypass the email update if you'd like and just check stats from your terminal:
 
@@ -189,6 +189,7 @@ stripeService.hitStripe = function(data, paymentEndpoint) {
 };
 ```
 
+##### *-----MAILGUN SECTION STARTS HERE-----*
 This method will create a coupon in Stripe with the provided params. It will also send out an email to the Stripe customer with the coupon code, percent off they get with the coupon and how many times they can use the coupon. This does require you to set up a [Mailgun](https://www.mailgun.com/) account, but this is extremely easy to do with the Heroku CLI:
 
 `heroku addons:create mailgun`
@@ -200,6 +201,7 @@ This creates an account and opens up your dashboard. Click the `Domains` tab fro
 `figaro heroku:set -e production`
 
 Open up the [`mail.rb`](./config/initializers/mail.rb) included in this repo and change the domain to your deployed Heroku instance. You are all set to send out emails to your customers with Stripe generated coupons upon receiving their payments.
+##### *-----MAILGUN SECTION ENDS HERE-----*
 
 You can also create coupons separate from customer payments:
 
