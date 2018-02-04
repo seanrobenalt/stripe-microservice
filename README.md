@@ -272,7 +272,7 @@ stripeService.createAccount = function(data, accountEndpoint) {
 ```javascript
 const bankAccountEndpoint = 'https://your-heroku-path.herokuapp.com/api/bank_accounts';
 
-stripeService.createAccount = function(data, bankAccountEndpoint) {
+stripeService.createBankAccount = function(data, bankAccountEndpoint) {
   // customer_id, account_number, routing_number, country and currency required
   var bank_account = {bank_account: {
     country: data.country,
@@ -328,3 +328,46 @@ stripeService.createAccount = function(data, payoutEndpoint) {
 
 };
 ```
+
+##### Transferring money to Stripe connected accounts
+
+```javascript
+const tranferEndpoint = 'https://your-heroku-path.herokuapp.com/api/transfers';
+
+stripeService.createTransfer = function(data, transferEndpoint) {
+  // amount, currency and destination are required
+  // destination is the account_id you are transferring money to
+  // source_transaction is required if you want to transfe a charge before it is available in your // balance
+  var payout = {payout: {
+    amount: data.amount,
+    currency: data.currency,
+    destination: data.destination,
+    source_transaction: data.source_transaction
+  }};
+
+  ajaxify(payoutEndpoint, payout);
+
+};
+```
+
+## Example Use Cases
+
+Once you've defined these functions on your `stripeService` object, you can simply include the necessary fields in your forms and then call the necessary function on submit.
+
+For example, you have an application where you want to store a credit card for user's upon signup. All you have to do is include the necessary credit card fields in your form and on submit call this function passing in the data:
+
+```javascript
+createStripeCustomer(data, customerEndpoint);
+```
+
+It's recommended to have a `cus_id` column in your database so you can also store the unique ID of the user in Stripe in order to be able to retrieve that user later on.
+
+It's also recommended to store your endpoints in variables, that way you can easily pass them in to your API calls depending on what you want to do.
+
+Now let's say you want to make a charge to this customer and send them a coupon they can use for further purchases. All you have to do here is send the amount, currency and unique Stripe `cus_id`, as well as a `coupon` column set to true with a `percent_off` and `duration` declared. You can then call this function on your payment submit button:
+
+```javascript
+hitStripe(data, paymentEndpoint)
+```
+
+That will make the charge of the specified amount on the default payment source of the specified customer, and send them an email with their coupon.

@@ -33,6 +33,9 @@ Rails.application.routes.draw do
 
     match '/payouts', to: 'application#preflight', via: [:options]
     resources :payouts, only: [:create]
+
+    match '/transfers', to: 'application#preflight', via: [:options]
+    resources :transfers, only: [:create]
   end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
