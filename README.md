@@ -332,20 +332,20 @@ stripeService.createAccount = function(data, payoutEndpoint) {
 ##### Transferring money to Stripe connected accounts
 
 ```javascript
-const tranferEndpoint = 'https://your-heroku-path.herokuapp.com/api/transfers';
+const transferEndpoint = 'https://your-heroku-path.herokuapp.com/api/transfers';
 
 stripeService.createTransfer = function(data, transferEndpoint) {
   // amount, currency and destination are required
   // destination is the account_id you are transferring money to
   // source_transaction is required if you want to transfe a charge before it is available in your // balance
-  var payout = {payout: {
+  var transfer = {transfer: {
     amount: data.amount,
     currency: data.currency,
     destination: data.destination,
     source_transaction: data.source_transaction
   }};
 
-  ajaxify(payoutEndpoint, payout);
+  ajaxify(transferEndpoint, transfer);
 
 };
 ```
@@ -371,3 +371,17 @@ hitStripe(data, paymentEndpoint)
 ```
 
 That will make the charge of the specified amount on the default payment source of the specified customer, and send them an email with their coupon.
+
+If you have an application in which you will want to pay users for whatever reason, you can create a connected account for them in Stripe in which you will be able to transfer money to their balance. It's recommended to create a standard account, as Stripe will take care of signing the user up. All you need to do is pass in an email, and specify standard `account_type`. Then you can call this function:
+
+```javascript
+createAccount(data, accountEndpoint);
+```
+
+It's recommended to save this call in a variable, as you will need the unique `account_id` from Stripe in order to transfer money to the account balance. Then in order to make a transfer, just pass in the `account_id`, currency type and amount:
+
+```javascript
+createTransfer(data, transferEndpoint);
+```
+
+This will make a transfer to the destination account and send an email to the recipient letting them know they have received some cash.
