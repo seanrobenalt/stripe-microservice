@@ -294,3 +294,17 @@ stripeService.createAccount = function(data, payoutEndpoint) {
 
 };
 ```
+
+#### The helpers
+
+When your app is deployed to Heroku and you've been making requests to it in production for quite some time, the methods in [`application_helper.rb`](./app/helpers/application_helper.rb) might come in handy.
+
+From your terminal, you can get these stats with:
+
+`heroku run bundle exec rails console`
+
+And then:
+
+`helper.get_your_balance` *<-- will return your balance object as JSON*
+
+All the methods in that file are self explanatory.
