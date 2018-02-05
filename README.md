@@ -77,9 +77,11 @@ The service comes configured with a job that will send you a weekly email of all
 
 `heroku addons:create rediscloud`
 
-This initializes a Redis cloud for you and will return the URL the cloud is running at. Copy this URL and run:
+This initializes a Redis cloud for you. In order to configure it, run:
 
-`heroku config:set REDIS_PROVIDER=the_url_you_copied`
+`heroku config:set REDIS_PROVIDER=REDISCLOUD_URL`
+
+Then store the `REDISCLOUD_URL` in your `application.yml` file so the [`redis.rb`](./config/initializers/redis.rb) can have access to it.
 
 Sign yourself up as a user at your Heroku instance and then you are all set to receive a weekly update email of your stats.
 
