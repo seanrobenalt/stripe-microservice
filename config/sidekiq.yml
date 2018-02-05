@@ -1,3 +1,5 @@
 ---
   :queues:
     - mailers
+    - stripe_objects
+    - hard_workers
